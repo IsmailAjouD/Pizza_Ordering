@@ -1,0 +1,39 @@
+﻿@page "/Menu"
+@inherits MenuBase
+@using PizzaOrdering.Models.Dtos
+@using Pizza_Ordering.web.Pages.ProductComponents
+@using Pizza_Ordering.web.Services
+@using Pizza_Ordering.web.Services.Cpntracts
+@using System.Text.Json
+@using Pizza_Ordering.web.Shared
+
+
+<h3>Menu</h3>
+
+   
+<div class="container">
+    <ProductCategoriesNavMenu />
+    @if (Products == null)
+    {
+        <DisplaySpinner />
+    }
+    else
+    {
+        var productCount = Products.Count();
+        @if (productCount > 0)
+        {
+            @foreach (var prodGroup in GetGroupedProductsByCategory())
+            {
+                <div class="row mt-3">
+                    <h4 class="text-black-50 fw-bold fs-2 text-uppercase">@GetCategoryName(prodGroup)</h4>
+                    <DisplayProducts Products="@prodGroup"></DisplayProducts>
+                </div>
+                <hr class="mb-3 col-6" />
+            }
+        }
+    }
+</div>
+
+
+
+

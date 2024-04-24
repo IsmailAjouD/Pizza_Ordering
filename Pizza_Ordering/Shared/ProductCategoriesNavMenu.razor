@@ -1,0 +1,66 @@
+﻿
+@inherits ProductCategoriesNavMenuBase
+
+@if (ProductCategoryDtos == null && ErrorMessage == null)
+{
+    <DisplaySpinner/>
+}
+else if (ErrorMessage != null)
+{
+    <DisplayError ErrorMessage="@ErrorMessage" />
+}
+else
+{
+    <div class="t">
+        <nav class="nav flex-column  me-5 categoriy ">
+            <div class="nav-item categoriyitems">
+                <a class="nav-link text-black fw-bold " href="/Menu">
+                    <span>All Kategorier</span>
+                </a>
+            </div>
+            @foreach (var productCategory in ProductCategoryDtos)
+            {
+                var link = "/ProductsByCategory/" + productCategory.Id;
+                <div class="nav-item categoriyitems ">
+                    <a class="nav-link text-black fw-bold " href="@link">
+                        <span>@productCategory.Name</span>
+                    </a>
+                </div>
+            }
+        </nav>
+    </div>
+}
+<style>
+    .t {
+        margin-top: 90px;
+    }
+
+    .nav-link.active {
+        color: forestgreen;
+    }
+    .categoriy {
+        background-color: white;
+        border-radius: 3px;
+        width: 250px;
+        -webkit-box-shadow: 0px 0px 22px 6px rgba(38,38,38,0.24);
+        box-shadow: 0px 0px 22px 6px rgba(38,38,38,0.24);
+    }
+
+    .categoriyitems {
+        border-bottom: 1px inset #BBBDBD;
+    }
+        .categoriyitems:hover {
+            background-color: #E52B50;
+            color: white;
+            
+        }
+
+        .categoriyitems a {
+            color: black;
+        }
+
+            .categoriyitems a:hover {
+                color: white;
+            }
+
+</style>

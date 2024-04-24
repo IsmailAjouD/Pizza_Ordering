@@ -1,0 +1,46 @@
+﻿
+<div>
+    <nav class="navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" Light="true" Dark="true" FixedTop="true">
+
+        <div class="container p-4">
+            <div class="d-flex gap-2">
+            <div>
+                <NavLink class="navbar-brand" href="/">
+                    <span class="flaticon-pizza-1 mr-1"></span>Pizza<br /><small>Delicious</small>
+                </NavLink>
+            </div>
+
+            <div class="collapse navbar-collapse flex-lg-row-reverse" id="ftco-nav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">Home</NavLink>
+                    </li>
+                    <li class="nav-item">
+                            <NavLink class="nav-link" href="/Menu">Menu</NavLink>
+                    </li>
+                    <li class="nav-item">
+                            <NavLink class="nav-link" href="/DisplayProducts">DisplayProducts</NavLink>
+                    </li>
+                    <li class="nav-item">
+                            <NavLink class="nav-link" href="/ModalDialog">ModalDialog</NavLink>
+                    </li> 
+                    <li class="nav-item">
+                            <NavLink class="nav-link" href="/ShoppingCart">ShoppingCart</NavLink>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

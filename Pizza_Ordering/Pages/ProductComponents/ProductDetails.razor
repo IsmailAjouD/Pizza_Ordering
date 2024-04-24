@@ -1,0 +1,117 @@
+﻿@using PizzaOrdering.Models.Dtos
+@inherits ProductDetailsBase
+
+<DialogHeader ShowClose="true">
+    @if (Product != null)
+    {
+        <div class="d-flex gap-1">
+            <p class="text-danger">@Product.PizzaNum</p>
+            <h1>@Product.PizzaName</h1>
+        </div>
+    }
+</DialogHeader>
+
+<DialogBody>
+    <div>
+        <div class="modal-body">
+            @if (Product == null && ErrorMessage == null)
+            {
+                <DisplaySpinner />
+            }
+            else if (ErrorMessage != null)
+            {
+                <DisplayError ErrorMessage="@ErrorMessage"></DisplayError>
+            }
+            else
+            {
+                <div>
+                    @if (Descriptions != null)
+                    {
+                        @foreach (var (description, index) in Descriptions.Select((value, index) => (value, index)))
+                        {
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" @bind="isCheckedList[index]" />
+                                <label class="form-check-label">@description</label>
+                            </div>
+                        }
+                    }
+                </div>
+            }
+        </div>
+
+        <p>Vælg Size</p>
+        @if (Product != null && Product.Sizes != null)
+        {
+            @foreach (var item in Product.Sizes)
+            {
+                <div class="d-flex">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="selectedSize" value="@item.SizeId" @onchange="() => UpdatePrice(item.SizeId)" checked="@IsChecked(item.Name)">
+                        <label class="form-check-label">
+                            <span>@item.Name</span>
+                            <span>@item.Price</span>
+                        </label>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <p>Product or Product sizes are not available.</p>
+        }
+
+        <p @onclick="ToggleVisibility">Extra tilbehør</p>
+        <div class="extra-accessories @(ShowText ? "show" : "hide")">
+            @if (ShowText)
+            {
+                @foreach (var item in ExtraItems)
+                {
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="SelectedExtraItem" @onchange="() => UpdatePriceWithExtraItem(item.ExtraItemId)" />
+                        <label class="form-check-label">@item.Name @item.Price</label>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</DialogBody>
+
+<DialogFooter>
+    <div class="d-flex align-items-center">
+        <p>@TotalPrice</p>
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <button class="btn btn-danger" @onclick="Decrement">-</button>
+            </div>
+            <input type="number" class="form-control input-number" @bind="Quantity">
+            <div class="input-group-append">
+                <button class="btn btn-success" @onclick="Increment">+</button>
+            </div>
+        </div>
+
+        @if (SelectedSizeId != null)
+        {
+            <p>@GetPrice(SelectedSizeId)</p>
+        }
+        <button type="button" class="btn btn-primary" @onclick="AddToCart_Click">
+            Tilfø til bestiling
+        </button>
+        <button type="button" class="btn btn-secondary" @onclick="@(()=> Dialog.Hide("no"))">Fortyd</button>
+    </div>
+</DialogFooter>
+
+<style>
+    .extra-accessories {
+        display: none; /* Initially hide the block of text */
+    }
+
+        .extra-accessories.show {
+            display: block; /* Show the block of text when the 'show' class is applied */
+        }
+
+        .extra-accessories p {
+            margin: 5px 0;
+            font-size: 16px;
+        }
+</style>

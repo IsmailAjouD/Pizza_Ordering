@@ -1,0 +1,168 @@
+﻿@page "/DisplayProducts"
+@inherits DisplayProductsBase
+@using System.Reflection
+@using PizzaOrdering.Models.Dtos
+@using Pizza_Ordering.web.Pages.ProductComponents
+
+
+
+
+<div class="row row-cols-1 row-cols-sm-1 row-cols-md-3  row-cols-lg-4 g-2 g-lg-3">
+    @foreach (var item in Products)
+    {
+        <div class=" col col-md-5">
+            <div class="card h-100">
+                <div class="shrink" style="height:100px; width:100%;">
+
+                      @if (string.IsNullOrEmpty(item.ImageURL))
+                {
+                <img src="/Images/Beauty/Beauty4.png" class="card-img-top" alt="@item.PizzaName" style="width:100%;  height:100%;">
+                }
+                else
+                {
+                <img src="@item.ImageURL" class="card-img-top" alt="@item.PizzaName" style="width:100%; height:100%;">
+                }
+                </div>
+                <div class="card-body">
+
+                    @if (item.Sizes.Any())
+                    {
+                        var smallsize = item.Sizes.FirstOrDefault(s => s.Name == "Small");
+                        if (smallsize != null)
+                        {
+                            <h5 class="card-title text-danger fw-bold fs-4">@smallsize.Price,-kr</h5>
+                        }
+                    }
+                    <hr />
+                    <div class="d-flex">
+                        <p class="pe-1 fw-bold fs-6 text-secondary"> @item.PizzaNum </p>
+                        <p class="card-title fw-bold fs-6 text-black text-uppercase">@item.PizzaName</p>
+                    </div>
+                    <p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
+                </div>
+
+                <div>
+
+                 
+                    <!-- Your card layout code goes here -->
+                </div>
+                <div class="d-grid gap-2">
+                        <button @onclick="() => ButtonOnClick(item.PizzaId)" type="button" class="btn  w-100  main-btn-three button_anmation" style="--color:#f3738a;--border:1px;--slant:.3em">
+
+                            <i class="fa fa-lock"></i> <span> Add To cart</span>
+                        </button>
+                </div>
+
+            </div>
+        </div>
+
+    }
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+    .shrink img {
+        transition: 1s ease;
+    }
+
+        .shrink img:hover {
+            -webkit-transform: scale(0.8);
+            -ms-transform: scale(0.8);
+            transform: scale(0.9);
+            transition: 1,4s ease;
+        }
+
+    hr {
+        color: darkgrey;
+    }
+
+    .button_anmation {
+        --border: 5px; /* the border width */
+        --slant: 0.7em; /* control the slanted corners */
+        --color: red; /* the color */
+        height: 54px;
+        transition: all 0.5s linear;
+        font-size: 18px;
+        border-radius: 10px;
+        padding: 0.1em 1.2em;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        color: var(--color);
+        background: linear-gradient(to bottom left,var(--color) 50%,#0000 50.1%) top right, linear-gradient(to top right,var(--color) 50%,#0000 50.1%) bottom left;
+        background-size: calc(var(--slant) + 1.3*var(--border)) calc(var(--slant) + 1.3*var(--border));
+        background-repeat: no-repeat;
+        box-shadow: 0 0 0 200px inset var(--s,#0000), 0 0 0 var(--border) inset var(--color);
+        clip-path: polygon(0 0, calc(100% - var(--slant)) 0, 100% var(--slant), 100% 100%, var(--slant) 100%,0 calc(100% - var(--slant)) );
+    }
+
+        /* .button_anmation:focus-visible {
+                        outline-offset: calc(-1*var(--border));
+                        outline: var(--border) solid #000c;
+                        clip-path: none;
+                        background-size: 0 0;
+                    }
+             */
+        .button_anmation:hover,
+        .button_anmation:active {
+            background-size: 100% 100%;
+            color: #fff;
+            --t: 0.2s 0.1s;
+        }
+
+    /*       .button_anmation:active {
+                        --s: #0005;
+                        transition: none;
+                    }
+             */
+
+</style>
+
+
+  @*       <div class="card w-100 ">
+
+            <div class="card-body">
+                <div class="d-flex flex-column-reverse">
+                    <div>
+                        <div class="d-flex">
+                            <p class="pe-1 fw-bold fs-6 text-secondary"> @item.PizzaNum </p>
+                            <p class="card-title fw-bold fs-6 text-black text-uppercase">@item.PizzaName</p>
+                        </div>
+                        <p class="card-text">@item.Description</p>
+                    </div>
+                 <div class="d-flex gap-1">
+                        @if (item.Sizes.Any())
+                        {
+                            var smallsize = item.Sizes.FirstOrDefault(s => s.Name == "Small");
+                            if (smallsize != null)
+                            {
+                                <h5 class="card-title text-danger fw-bold fs-4">@smallsize.Price,-kr</h5>
+                            }
+                        }
+
+                    <div class="d-grid gap-2">
+                        <a href="/ProductDetails/@item.PizzaId" class="m-1">
+                            <button type="button" class="btn">
+                                <i class="fa fa-lock"></i> <span> + </span>
+                            </button>
+                        </a>
+                    </div>
+                 </div>
+                </div>
+            </div>
+        </div> *@
+
+
+
