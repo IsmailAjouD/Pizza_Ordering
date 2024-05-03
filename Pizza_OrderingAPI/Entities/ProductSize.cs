@@ -10,13 +10,13 @@ namespace Pizza_OrderingAPI.Entities
         public string Name { get; set; }
         public decimal Price { get; set; }
 
-        // Foreign key property
+        //Foreign key property
         public int PizzaId { get; set; }
 
         // Navigation property
         [ForeignKey("PizzaId")]
         public ProductMenu Pizza { get; set; }
 
-      
+
     }
 }

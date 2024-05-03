@@ -43,7 +43,7 @@ namespace Pizza_OrderingAPI.Repositories
             return products;
         }
 
-       public async Task<IEnumerable<ProductSize>> GetSizes()
+        public async Task<IEnumerable<ProductSize>> GetSizes()
         {
             var sizes = await _shopOnlineDbContext.PizzaSizes.ToListAsync();
             return sizes;
@@ -71,23 +71,15 @@ namespace Pizza_OrderingAPI.Repositories
             return extraItems;
         }
 
-        //public async Task<List<ExtraItem>> GetExtraItems(List<int> ids)
-        //{
-        //    var extraItems = await _shopOnlineDbContext.ExtraItems.Where(e => ids.Contains(e.ExtraItemId)).ToListAsync();
-        //    return extraItems;
-        //}
-        //public async Task<List<ExtraItem>> GetExtraItems(string extraItemIds)
-        //{
-        //    var ids = extraItemIds.Split(',').Select(int.Parse).ToList();
-        //    var extraItems = await _shopOnlineDbContext.ExtraItems.Where(e => ids.Contains(e.ExtraItemId)).ToListAsync();
-        //    return extraItems;
-        //}
-
         public async Task<List<ExtraItem>> GetExtraItemsbyListid(string extraItemIds)
         {
+           
+
             var ids = extraItemIds.Split(',').Select(int.Parse).ToList();
             var extraItems = await _shopOnlineDbContext.ExtraItems.Where(e => ids.Contains(e.ExtraItemId)).ToListAsync();
             return extraItems;
+
+
         }
 
       

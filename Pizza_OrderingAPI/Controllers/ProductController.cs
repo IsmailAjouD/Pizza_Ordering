@@ -173,8 +173,8 @@ namespace Pizza_OrderingAPI.Controllers
             }
 
         }
-        [HttpGet("{id:int}/GetCartItembysizeId")]
-        public async Task<ActionResult<ProductSize>> GetCartItembysizeId(int id)
+        [HttpGet("{id:int}/GetPrudctItembysizeId")]
+        public async Task<ActionResult<ProductSize>> GetPrudctItembysizeId(int id)
         {
             try
             {

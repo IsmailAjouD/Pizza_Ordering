@@ -65,6 +65,58 @@ namespace Pizza_Ordering.web.Services
             }
         }
 
+        public async Task<CartItemDto> DeletExtraItem(CartItemForDeletExtraItemDto cartItemForDeletExtraItemDto)
+        {
+            try
+            {
+                var jsonRequest = JsonConvert.SerializeObject(cartItemForDeletExtraItemDto);
+                var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
+
+                var respons = await _httpClient.PatchAsync($"api/ShoppingCart/{cartItemForDeletExtraItemDto.CartItemId}/DeletExtraItemfromCartItem",content);
+                if (respons.IsSuccessStatusCode)
+                {
+                    return await respons.Content.ReadFromJsonAsync<CartItemDto>();
+
+                }
+                return default(CartItemDto);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
+
+        public async Task<List<CartItemDto>> GetCartItembyId(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/ShoppingCart/{id}/GetCartItem");
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return Enumerable.Empty<CartItemDto>().ToList();
+                    }
+                    return await response.Content.ReadFromJsonAsync<List<CartItemDto>>();
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Http status code: {response.StatusCode} Message: {message}");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+         
+
+        }
+
         public async Task<List<CartItemDto>> GetCartItems(int userId)
         {
             try
@@ -93,12 +145,11 @@ namespace Pizza_Ordering.web.Services
             }
         }
 
-
-
         public async Task<CartItemDto> UpdateQty(CartItemQtyUpdateDto cartItemQtyUpdateDto)
         {
             try
             {
+             
                 var jsonRequest = JsonConvert.SerializeObject(cartItemQtyUpdateDto);
                 var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
 
@@ -107,6 +158,29 @@ namespace Pizza_Ordering.web.Services
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadFromJsonAsync<CartItemDto>();
+                }
+                return null;
+
+            }
+            catch (Exception)
+            {
+                //Log exception
+                throw;
+            }
+        }
+
+        public async Task<CartIemDeletItemDto> UpdatRemovableItem(CartIemDeletItemDto cartIemDeletItemDto)
+        {
+            try
+            {
+                var jsonRequest = JsonConvert.SerializeObject(cartIemDeletItemDto);
+                var content = new StringContent(jsonRequest, Encoding.UTF8, "application/json-patch+json");
+                var response = await _httpClient.PatchAsync($"api/ShoppingCart/{cartIemDeletItemDto.CartItemId}/DeletitemfromItemCart", content);
+
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadFromJsonAsync<CartIemDeletItemDto>();
                 }
                 return null;
 

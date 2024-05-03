@@ -15,10 +15,12 @@ namespace PizzaOrdering.Models.Dtos
         public string PizzaSize { get; set; }
         public string ProductDescription { get; set; }
         public string ProductImageURL { get; set; }
+        //public decimal Price { get; set; }
         public decimal Price { get; set; }
-        public decimal TotalPrice { get; set; }
         public int Qty { get; set; }
         public int SizeId { get; set; }
+        public string RemovableItems { get; set; }
+
         public List<ExtraItemDto>? ExtraItems { get; set; }
 
 

@@ -12,7 +12,8 @@ namespace Pizza_OrderingAPI.Entities
         public int ProductId { get; set; }
         public int SizeId { get; set; }
         public int Quantity { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal Price { get; set; }
+        public string RemovableItems {  get; set; }
         public string? ExtraItemsId { get; set; }   
 
     }

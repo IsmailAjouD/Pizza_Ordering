@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -22,6 +22,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PizzaOrdering.Models\PizzaOrdering.Models.csproj" />
+    <ProjectReference Include="..\Pizza_Ordaring.Infrastructure\Pizza_Ordaring.Infrastructure.csproj" />
+    <ProjectReference Include="..\Pizza_Ordaring.Shared\Pizza_Ordaring.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Service\" />
   </ItemGroup>
 
 </Project>

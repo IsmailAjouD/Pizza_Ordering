@@ -12,8 +12,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContextPool<ShopOnlineDbContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("ShopOnlinConnection")));
+//builder.Services.AddDbContextPool<ShopOnlineDbContext>(options =>
+//options.UseSqlServer(builder.Configuration.GetConnectionString("ShopOnlinConnection")));
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IShoppingCartRepository, ShoppingCartRepository>();
 

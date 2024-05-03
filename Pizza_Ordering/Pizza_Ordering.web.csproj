@@ -11,15 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\fonts\.DS_Store" />
-    <None Include="wwwroot\fonts\flaticon\.DS_Store" />
-    <None Include="wwwroot\fonts\icomoon\.DS_Store" />
-    <None Include="wwwroot\fonts\ionicons\fonts\.DS_Store" />
-    <None Include="wwwroot\images\.DS_Store" />
-    <None Include="wwwroot\js\.DS_Store" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="BlazorDialog" Version="2.3.0" />
     <PackageReference Include="Blazored.Modal" Version="6.0.1" />
     <PackageReference Include="Majorsoft.Blazor.Components.Modal" Version="1.5.0" />

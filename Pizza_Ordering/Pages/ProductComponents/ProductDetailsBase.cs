@@ -24,17 +24,21 @@ namespace Pizza_Ordering.web.Pages.ProductComponents
         public ProductMenuDto Product { get; set; }
         public IEnumerable<ExtraItemDto> ExtraItems { get; set; }
         public ExtraItemDto ExtraItem { get; set; }
-
+ 
         // Other Properties
-        public List<string> Descriptions { get; set; }
 
         public string ErrorMessage { get; set; }
         public int SelectedSizeId { get; set; }
 
-        protected List<bool> isCheckedList = new List<bool>();
+
         public int Quantity { get; set; } = 1;
         public decimal TotalPrice { get; set; }
         public bool ShowText { get; set; } = false;
+
+        public List<string> Descriptions { get; set; }
+
+        protected List<bool> isCheckedList = new List<bool>();
+        protected List<string> UncheckedDescriptions { get; set; }
 
         // OnInitializedAsync method
         protected override async Task OnInitializedAsync()
@@ -48,12 +52,77 @@ namespace Pizza_Ordering.web.Pages.ProductComponents
                 GetTotalPrice();
                 Descriptions = GetDescriptionAsSplit().ToList();
                 isCheckedList = Enumerable.Repeat(true, Descriptions.Count).ToList();
+               UncheckedDescriptions = new List<string>();
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
             }
         }
+
+        public void GetUncheckeItems(int index)
+        {
+            if (!isCheckedList[index] && !UncheckedDescriptions.Contains(Descriptions[index]))
+            {
+                UncheckedDescriptions.Add(Descriptions[index]);
+                Console.WriteLine("Unchecked Description: " + Descriptions[index]); // Output to console
+
+                // Save the unchecked description to the database
+            }
+            else if (isCheckedList[index] && UncheckedDescriptions.Contains(Descriptions[index]))
+            {
+                UncheckedDescriptions.Remove(Descriptions[index]);
+                Console.WriteLine("Unchecked Description Removed: " + Descriptions[index]); // Output to console
+            }
+        }
+
+        //public void GetUncheckeItems(int index)
+        //{
+        //    // Check if Descriptions is not null and index is within its bounds
+        //    if (Descriptions != null )
+        //    {
+        //        var description = Descriptions[index];
+
+        //        // Ensure isCheckedList is initialized and has the correct count
+        //        if (isCheckedList != null && isCheckedList.Count == Descriptions.Count)
+        //        {
+        //            if (!isCheckedList[index])
+        //            {
+        //                if (UncheckedDescriptions == null)
+        //                {
+        //                    UncheckedDescriptions = new List<string>();
+        //                }
+
+        //                if (!UncheckedDescriptions.Contains(description))
+        //                {
+        //                    UncheckedDescriptions.Add(description);
+        //                    // Optionally, you can remove the item from the checked list
+        //                     isCheckedList[index] = false;
+        //                    Console.WriteLine("Unchecked Description Added: " + description); // Output to console
+        //                }
+        //            }
+        //            else
+        //            {
+        //                if (UncheckedDescriptions != null && UncheckedDescriptions.Contains(description))
+        //                {
+        //                    UncheckedDescriptions.Remove(description);
+        //                    Console.WriteLine("Unchecked Description Removed: " + description); // Output to console
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            // Handle the case where isCheckedList is not properly initialized
+        //            Console.WriteLine("isCheckedList is not properly initialized");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // Handle the case where Descriptions is null or index is out of bounds
+        //        Console.WriteLine("Descriptions is null or index is out of bounds");
+        //    }
+        //}
+
 
         // Utility Methods
         protected string[] GetDescriptionAsSplit()
@@ -159,7 +228,7 @@ namespace Pizza_Ordering.web.Pages.ProductComponents
         }
         private List<CartItemDto> ShoppingCartItems { get; set; }
 
-      public  List<int> SelectedExtraItemIds = new List<int>();
+        public  List<int> SelectedExtraItemIds = new List<int>();
 
         private async void GetExtraItemById(int id)
         {
@@ -174,20 +243,25 @@ namespace Pizza_Ordering.web.Pages.ProductComponents
             //SelectedExtraItems = ExtraItem;
 
         }
+     
+        
+        
         public async Task AddToCart_Click()
 
         {
+            
             try
             {
-
                 var cartItemToAddDto = new CartItemToAddDto
                 {
                     CartId= HardCoded.CartId,
                     ProductId = Product.PizzaId,
                     Quntity = Quantity,
                     ProductSize= SelectedSizeId,
-                    TotalPrice = TotalPrice,
-                    ExtraItemIds = string.Join(",", SelectedExtraItemIds)
+                    Price = TotalPrice,
+                    ExtraItemIds = string.Join(",", SelectedExtraItemIds),
+                    RemovableItems = string.Join(" ",UncheckedDescriptions)
+
                 };
                 //if (SelectedExtraItems != null && SelectedExtraItems.Any())
                 //{

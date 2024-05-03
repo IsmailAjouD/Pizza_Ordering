@@ -178,5 +178,35 @@ namespace Pizza_Ordering.web.Services
                 throw;
             }
         }
+
+        public async Task<ProductSizeDto> GetProductbtSizeId(int id)
+        {
+            try
+            {
+                var response = await _httpClient.GetAsync($"api/Product/{id}/GetPrudctItembysizeId");
+                if (response.IsSuccessStatusCode)
+                {
+                    if (response.StatusCode == System.Net.HttpStatusCode.NoContent)
+                    {
+                        return default(ProductSizeDto);
+                    }
+                    return await response.Content.ReadFromJsonAsync<ProductSizeDto>();
+
+                }
+                else
+                {
+                    var message = await response.Content.ReadAsStringAsync();
+                    throw new Exception(message);
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+
     }
 }

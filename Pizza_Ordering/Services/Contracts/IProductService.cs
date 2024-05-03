@@ -10,5 +10,6 @@ namespace Pizza_Ordering.web.Services.Cpntracts
         Task<IEnumerable<ProductMenuDto>> GetItemByCategory(int categoryId);
         Task<IEnumerable<ExtraItemDto>> GetExtraItems();
         Task<ExtraItemDto> GetExtraItem(int id);
+        Task<ProductSizeDto> GetProductbtSizeId(int id);
     }
 }

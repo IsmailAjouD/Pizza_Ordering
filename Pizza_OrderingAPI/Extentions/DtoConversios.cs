@@ -93,10 +93,11 @@ namespace Pizza_OrderingAPI.Extentions
                         ProductImageURL = product.ImageURL,
                         CartId = cartItem.CartId,
                         //Qty = size.Quantity,
-                        Price = size.Price,
+                        //Price = size.Price,
                         PizzaSize = size.Name,
                         //TotalPrice = size.Price * size.Quantity,
                         SizeId = size.SizeId,
+                        RemovableItems=cartItem.RemovableItems,
 
 
                     }).ToList();
@@ -125,7 +126,7 @@ namespace Pizza_OrderingAPI.Extentions
                 //TotalPrice = productSize.Price * productSize.Quantity,
             };
         }
-        public static CartItemDto ConvertToDto(this CartItem cartItem, ProductMenu product, ProductSize productSize, IEnumerable<ExtraItem> extraItems)
+        public static CartItemDto ConvertToDto(this CartItem cartItem, ProductMenu product, ProductSize productSize, IEnumerable<ExtraItem>? extraItems)
         {
 
             return new CartItemDto
@@ -134,13 +135,17 @@ namespace Pizza_OrderingAPI.Extentions
                 ProductId = cartItem.ProductId,
                 CartId = cartItem.CartId,
                 Qty = cartItem.Quantity,
+                Price = cartItem.Price,
+                RemovableItems=cartItem.RemovableItems,
+                
 
                 ProductName = product.PizzaName,
-                ProductDescription = product.Description,
+                ProductDescription = cartItem.RemovableItems,
                 ProductImageURL = product.ImageURL,
 
-                Price = productSize.Price,
-                TotalPrice = productSize.Price * cartItem.Quantity,
+
+                //Price = productSize.Price,
+                //TotalPrice = productSize.Price * cartItem.Quantity,
                 PizzaSize = productSize.Name,
                 SizeId = productSize.SizeId,
 
@@ -165,16 +170,15 @@ namespace Pizza_OrderingAPI.Extentions
                     ProductName = product.PizzaName,
                     ProductDescription = product.Description,
                     ProductImageURL = product.ImageURL,
-                    Price = productSize.Price,
+                    //Price = productSize.Price,
                     Qty = cartItem.Quantity,
-                    TotalPrice = productSize.Price * cartItem.Quantity,
+                    Price = productSize.Price * cartItem.Quantity,
                     PizzaSize = productSize.Name,
                     SizeId = productSize.SizeId,
+                    RemovableItems = cartItem.RemovableItems
                 };
             }
      
-
-
         public static ProductSizeDto ConvertToDto( this ProductSize productSize)
         {
             return new ProductSizeDto
@@ -187,8 +191,6 @@ namespace Pizza_OrderingAPI.Extentions
             };
         }
 
-
-
         public static CartItemDto ConvertToDto( this CartItem cartItem)
         {
             return new CartItemDto
@@ -198,10 +200,57 @@ namespace Pizza_OrderingAPI.Extentions
                 CartId = cartItem.CartId,
                 Qty = cartItem.Quantity,
                 SizeId = cartItem.SizeId,
+                RemovableItems = cartItem.RemovableItems,
+                Price = cartItem.Price,
+                //ExtraItems = cartItem.ExtraItemsId?.Select(e => new ExtraItemDto
+                //{
+                //    ExtraItemId = e
+                //}).ToList()
+             
+
                 //TotalPrice = cartItem.Price * cartItem.Quantity,
             };
+
+        }
+        public static CartItemDto ConvertToDtoUpdateQty(this CartItem cartItem)
+        {
+            var cartItemDto = new CartItemDto
+            {
+                Id = cartItem.CartItemId,
+                ProductId = cartItem.ProductId,
+                CartId = cartItem.CartId,
+                Qty = cartItem.Quantity,
+                SizeId = cartItem.SizeId,
+                RemovableItems = cartItem.RemovableItems,
+                Price = cartItem.Price
+            };
+
+            // Ensure ExtraItems collection is initialized
+            cartItemDto.ExtraItems = new List<ExtraItemDto>();
+
+            // Populate ExtraItems collection if ExtraItemsId is not null
+            if (cartItem.ExtraItemsId != null)
+            {
+                foreach (var extraItemId in cartItem.ExtraItemsId)
+                {
+                    cartItemDto.ExtraItems.Add(new ExtraItemDto
+                    {
+                        ExtraItemId = extraItemId
+                    });
+                }
+            }
+
+            return cartItemDto;
         }
 
+        public static CartIemDeletItemDto ConvertToDtoDelet(this CartItem cartItem)
+        {
+            return new CartIemDeletItemDto()
+            {
+                CartItemId = cartItem.CartItemId,
+                RemovableItems = cartItem.RemovableItems,
+            };
+        }
 
 
 

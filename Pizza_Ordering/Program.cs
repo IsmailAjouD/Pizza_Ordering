@@ -17,7 +17,7 @@ internal class Program
         builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddScoped<IShoppingCartService, ShoppingCartService>();
 		builder.Services.AddBlazorDialog();
-
+        builder.Services.AddScoped<IJSInteropService, JSInteropService>();
         //builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
         await builder.Build().RunAsync();
      

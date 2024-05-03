@@ -23,17 +23,44 @@ else
                             <img src="@item.ProductImageURL" width="300" class="img-thumbnail">
                         </div>
                         <div class="col-md-8">
-                            <h5>@item.ProductName</h5>
-                            <div class="mb-4">@item.ProductDescription</div>
-                            <div class="input-group">
-                            <span>
-                                Price: <b>@item.TotalPrice.ToString("C")</b>
-                            </span>
+                            <div class="d-flex">
+
+                            <h5>@item.ProductName</h5> <p>(@item.PizzaSize )</p>
+                            </div>
+
+                          <ul>
+                            @if (!string.IsNullOrEmpty(item.RemovableItems))
+                            {   
+                                    @foreach (var removable in item.RemovableItems.Split(' '))
+                                    {
+                                        <li @onclick="@(() => DeletRemovableitem(item.Id,removable))">@removable</li>
+
+                                    }   
+                            }         
+                            </ul>
+                           
+                            @if(@item.ExtraItems != null)
+                            {
+                                <h4>ExtraItems</h4>
+                                foreach(var Extaraitem in @item.ExtraItems)
+                                {
+                                <div class="d-flex">
+                                        <p @onclick="@(()=>RemovExtraItem(item.Id,@Extaraitem.ExtraItemId))"> @Extaraitem.Name</p><p class="danger"> @Extaraitem.Price</p>
+                                </div>
+                                    
+                                }
+                                
+                            }
+                            <div class="input-group w-50">
+                             
+                                <span>
+                                Price: <b>@item.Price.ToString("C")</b>
+                                </span>                           
                           
                                 <div class="input-group-prepend">
                                     <button class="btn btn-danger" @onclick="() => Decrement(item)">-</button>
                                 </div>
-                                <input type="number" class="form-control input-number" @bind="@item.Qty" @oninput="() => UpdateQuantityCarItem_Click(item.Id,item.Qty)">
+                                <input type="number" class="form-control input-number" @bind="@item.Qty" @oninput="() => UpdateQuantityCarItem_Click(item.Id,item.Qty,item.SizeId)">
                                 <div class="input-group-append">
                                     <button class="btn btn-success" @onclick="() => Increment(item)">+</button>
                                 </div>
@@ -41,7 +68,7 @@ else
                                 <div>
                                     <button @onclick="(() => DeleteCartItem_Click(item.Id))"
                                             class="btn btn-danger sm">
-                                        <i class="fa fa-trash"></i> Delete
+                                        <i class="fa fa-trash"></i> 
                                     </button>
                                 </div>
                             </div>
@@ -56,8 +83,8 @@ else
             <div class="col-md-3">
                 <h5>Cart Summary</h5>
                 <div class="mt-2">
-                    <div>Total - (@TotalQuantity items)&nbsp;<b>@TotalPrice</b></div>
-                    <a href="Checkout" class="btn btn-success">
+@*                     <div>Total - (@TotalQuantity items)&nbsp;<b>@TotalPrice</b></div>
+ *@                    <a href="Checkout" class="btn btn-success">
                         <span class="oi oi-credit-card"></span>&nbsp; Proceed to Checkout
                     </a>
                 </div>

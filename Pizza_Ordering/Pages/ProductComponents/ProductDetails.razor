@@ -24,17 +24,92 @@
             }
             else
             {
-                <div>
+                         <div>
                     @if (Descriptions != null)
                     {
                         @foreach (var (description, index) in Descriptions.Select((value, index) => (value, index)))
                         {
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" @bind="isCheckedList[index]" />
+                                <input class="form-check-input" type="checkbox" @bind="@isCheckedList[index]" />
                                 <label class="form-check-label">@description</label>
                             </div>
+               
+                          
                         }
-                    }
+                        @foreach (var (description, index) in Descriptions.Select((value, index) => (value, index)))
+                        {
+                            if(Descriptions !=null && index >=0 && index < Descriptions.Count)
+                            {
+                                var newdescription = Descriptions[index];
+                                if (isCheckedList != null && isCheckedList.Count == Descriptions.Count)
+                                {
+                                    if (!isCheckedList[index])
+                                    {
+                                        if(UncheckedDescriptions == null)
+                                        {
+                                            UncheckedDescriptions = new List<string>();
+                                        }
+                                        if (!UncheckedDescriptions.Contains(newdescription))
+                                        {
+                                            UncheckedDescriptions.Add(newdescription);
+                                            isCheckedList[index] = false;
+                                            Console.WriteLine("Unchecked Description Added: " + description); // Output to console
+                                            foreach (var uncheckd in UncheckedDescriptions.Distinct())
+                                            {
+
+                                                Console.WriteLine("Unchecked UncheckedDescriptions: " + uncheckd);
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (UncheckedDescriptions != null && UncheckedDescriptions.Contains(newdescription))
+                                        {
+                                            UncheckedDescriptions.Remove(newdescription);
+                                            Console.WriteLine("Unchecked Description Removed: " + newdescription); // Output to console
+                                            foreach (var uncheckd in UncheckedDescriptions.Distinct())
+                                            {
+
+                                                Console.WriteLine("Unchecked UncheckedDescriptions: " + uncheckd);
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                         @*    if (!isCheckedList[index])
+                            {
+                                UncheckedDescriptions.Add(description);
+                                if (UncheckedDescriptions.Count > 0)
+                                {
+                                    foreach( var uncheckd in UncheckedDescriptions.Distinct())
+                                    {
+
+                                        Console.WriteLine("Unchecked Description: " + uncheckd);
+                                    }
+                                }
+                            } *@
+                        }
+                     @*     @foreach (var (description, index) in Descriptions.Select((value, index) => (value, index)))
+                            {
+                                if (!isCheckedList[index])
+                                {
+                                    UncheckedDescriptions.Add(description);
+                                }
+                            }
+                            @if (UncheckedDescriptions.Count > 0)
+                            {
+                                <div>
+                                    Unchecked Descriptions:
+                                    @foreach (var uncheckedDescription in UncheckedDescriptions.Distinct())
+                                    {
+                                        <div>@uncheckedDescription</div>
+                               
+                                        { Console.WriteLine("Unchecked Description: " + uncheckedDescription); }
+                                    }
+                                </div>
+                            } *@
+                                            }
                 </div>
             }
         </div>

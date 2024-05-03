@@ -15,6 +15,7 @@ namespace Pizza_OrderingAPI.Controllers
         private IShoppingCartRepository _shoppingCartRepository;
         private IProductRepository _productRepository;
 
+
         public ShoppingCartController(IShoppingCartRepository shoppingCartRepository, IProductRepository productRepository)
         {
             _shoppingCartRepository = shoppingCartRepository;
@@ -77,9 +78,24 @@ namespace Pizza_OrderingAPI.Controllers
                     var productMenu = await _productRepository.GetItem(cartItem.ProductId);
                     var productSize = await _productRepository.GetItembySizeId(cartItem.SizeId);
 
-                    // Convert cart item to DTO
-                    var cartItemDto = cartItem.ConvertToDto(productMenu, productSize);
-                    cartItemDtos.Add(cartItemDto);
+                    if (cartItem.ExtraItemsId !=null && cartItem.ExtraItemsId.Length > 0 && cartItem.ExtraItemsId != " ")
+                    {
+                    var ExtraItem = await _productRepository.GetExtraItemsbyListid(cartItem.ExtraItemsId);
+                        if (ExtraItem != null)
+                        {
+                            // Convert cart item to DTO
+                            var cartItemDto = cartItem.ConvertToDto(productMenu, productSize, ExtraItem);
+                            cartItemDtos.Add(cartItemDto);
+
+                        }
+                    }
+                 
+                    else
+                    {
+                        var cartItemDto = cartItem.ConvertToDto(productMenu, productSize);
+                        cartItemDtos.Add(cartItemDto);
+                    }
+
                 }
 
                 return Ok(cartItemDtos);
@@ -174,10 +190,9 @@ namespace Pizza_OrderingAPI.Controllers
                 {
                     return NotFound();
                 }
-              var product = _productRepository.GetItem(cartItem.ProductId);
-                var cartItemDto = cartItem.ConvertToDto();
 
-                return Ok(cartItemDto);
+               var cartItemDto = cartItem.ConvertToDtoUpdateQty();
+                return Ok(cartItem);
             }
             catch (Exception ex)
             {
@@ -185,6 +200,28 @@ namespace Pizza_OrderingAPI.Controllers
             }
         }
 
+
+        [HttpPatch("{id:int}/DeletitemfromItemCart")]
+        public async Task<ActionResult<CartIemDeletItemDto>> DeletitemfromItemCart(CartIemDeletItemDto cartIemDeletItemDto)
+        {
+            try
+            {
+                var cartItem = await _shoppingCartRepository.DeletItemFromCartItem(cartIemDeletItemDto);
+                if (cartItem == null)
+                {
+                    return NotFound(cartIemDeletItemDto);
+
+                }
+                var ItemFromCartItem = _productRepository.GetItem(cartItem.CartItemId);
+                var cartItemDto = cartItem.ConvertToDto();
+                return Ok(cartItemDto);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<CartItemDto>> DeleteItem(int id)
@@ -207,6 +244,25 @@ namespace Pizza_OrderingAPI.Controllers
             }
         }
 
+        [HttpPatch("{id:int}/DeletExtraItemfromCartItem")]
+        public async Task<ActionResult<CartItemForDeletExtraItemDto>> DeletExtraItemfromCartItem(CartItemForDeletExtraItemDto  cartItemForDeletExtraItemDto)
+        {
+            try
+            {
+                var carItem = await _shoppingCartRepository.DeletExstraItemFromCartItem(cartItemForDeletExtraItemDto.CartItemId, cartItemForDeletExtraItemDto.ExtraItemId);
+                if (carItem == null)
+                {
+                    return NotFound();
+                }
+              var cartItemDto = carItem.ConvertToDto();
+                return Ok(carItem);
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+         
+        }
     }
 }
